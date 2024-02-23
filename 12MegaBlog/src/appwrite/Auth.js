@@ -53,7 +53,7 @@ export class AuthService{
         
     }
 
-    async logout(){
+    async logout(){ 
         try {
             return await this.account.deleteSessions()
             //deleteSessions -- delete krr dega sara sessions
