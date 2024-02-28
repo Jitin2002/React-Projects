@@ -80,7 +80,7 @@ function Login (){
                         />
 
                         <Input 
-                        label="Password"
+                        label="Password :"
                         type="password"
                         placeholdr="Enter your password"
                         {...register("password" ,{
