@@ -1,7 +1,7 @@
 import conf from "../conf/conf.js"
 import {Client ,Account ,ID} from "appwrite"
 
-export class AuthService{
+export  class AuthService{
     client = new Client()
     account;
 
@@ -12,14 +12,14 @@ export class AuthService{
         this.account = new Account(this.client);
     }
 // promise  account create hone ke baad 
-    async createAccout({email,passward,name}){
+    async createAccout({email,password,name}){
         // fail bhi ho skta ha --- so try catch use kra ha
         try { // wait kro account creatre hone ha 
             // unique id honi chiye phle 
-            const userAccount = await this.account.create(ID.unique(),email,passward,name)
+            const userAccount = await this.account.create(ID.unique(),email,password,name)
             if(userAccount){ // useraccount exit krata ha 
               //call another method  -- login bhi kra do 
-              return this.login(email,passward) 
+              return this.login({email,password}) 
 
             }
             else {
@@ -31,9 +31,9 @@ export class AuthService{
         }
     }
 
-    async login({email,passward}){
+    async login({email,password}){
         try {
-            return await this.account.createEmailPasswordSession(email,passward)
+            return await this.account.createEmailPasswordSession(email,password)
             
         } catch (error) {
             throw error
@@ -44,16 +44,16 @@ export class AuthService{
 
     async getCurrentUser(){
         try {
-            return await this.account.get()
+            return await this.account.get();
         } catch (error) {
-            console.log("Appwrite service :getCurentUser::error",error)
+            console.log("Appwrite service :: getCurentUser::error",error);
             
         }
         return null; // kisi bhi thra se try catch me problem aa jyti ha tab bhi return null hoga
         
     }
 
-    async logout(){ 
+    async logout (){ 
         try {
             return await this.account.deleteSessions()
             //deleteSessions -- delete krr dega sara sessions

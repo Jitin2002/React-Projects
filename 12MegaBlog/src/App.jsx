@@ -1,10 +1,11 @@
-
+import React from 'react'
 import { useState ,useEffect} from 'react'
 import './App.css'
 import {useDispatch} from "react-redux"
 import authService from './appwrite/Auth'
 import {login , logout} from './store/authSlice'
 import { Header,Footer } from './components'
+import { Outlet } from 'react-router-dom'
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
       <Header/>
       <main>
         
-       Todo :{ /*<Outlet/>  /*react router dom se outlet aaye ga */}
+       Todo :<Outlet/>
       
       </main>
       <Footer/>

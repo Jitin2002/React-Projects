@@ -25,7 +25,7 @@ export class Service{
                   content,
                   featuredImage,
                   status,
-                  userId
+                  userId,
                 }
             )
         } catch (error) {
@@ -126,11 +126,11 @@ export class Service{
         }
     }
 
-    async deleteFile(fileID){  // featuredImage me fileId hi dange 
+    async deleteFile(fileId){  // featuredImage me fileId hi dange 
         try {
             await this.bucket.deleteFile(
                 conf.appwriteBucketId,
-                fileID
+                fileId
 
             )
             return true
@@ -142,10 +142,10 @@ export class Service{
         }
     }
 
-    getFilePreview(fileID){
+    getFilePreview(fileId){
         return this.bucket.getFilePreview(
             conf.appwriteBucketId,
-            fileID
+            fileId
         )
     }
 }

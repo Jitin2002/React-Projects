@@ -4,36 +4,37 @@ import { useCallback } from "react";
 import {useForm} from "react-hook-form"
 import {Button ,Input,Select,RTE} from "../index"
 import appwriteService from "../../appwrite/config";
-import { UseDispatch ,useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 function PostForm ({post}) {
     const {register, handleSubmit,watch,setValue,control,getValues} = useForm({
         defaultValues :{
             title : post?.title || "", // post ka title ha to use krr lo nhi empty de do 
-            slug: post?.slug || '',
+            slug: post?.$id || '',
             content :post?.content || '',
-            status :post?.status || 'active',
+            status : post?.status || 'active',
 
-        }
+        },
     })
 
     const navigate = useNavigate ()
-    const userData = useSelector((state) => state.user.userData)
+    const userData = useSelector((state) => state.auth.userData)
 
     const submit = async (data) => {
         if(post) {
-           const file = data.image[0]?appwriteService.uploadFile(data.image[0]) : null
+           const file = data.image[0] ? appwriteService.uploadFile(data.image[0]) : null ;
 
            if(file) {
-            appwriteService.deleteFile(post.featuredImage)
+            appwriteService.deleteFile(post.featuredImage);
            }
-           const dbPost =await appwriteService.updatePost(post.$id , {
+           const dbPost = await appwriteService.updatePost(post.$id , {
             ...data,
             featuredImage :file ? file.$id : undefined})
 
             if(dbPost){ 
-            navigate(`/post/${dbPost.$id}`)
+                navigate(`/post/${dbPost.$id}`);
+            
             }
 
         }
@@ -42,8 +43,8 @@ function PostForm ({post}) {
             const file = await appwriteService.uploadFile(data.image[0])
 
             if(file) {
-                const fileId = file.$id
-                data.featuredImage = fileId
+                const fileId = file.$id;
+                data.featuredImage = fileId;
                 const dbPost = await appwriteService.createPost ({
                     ...data,
                     userId : userData.$id 
@@ -57,32 +58,32 @@ function PostForm ({post}) {
     }
 
     const SlugTransform = useCallback ( (value) => {
-        if(value && typeof value === 'string'){
+        if(value && typeof value === "string"){
             return value
             .trim()
             .toLowerCase()
-            .replace(/^[a-zA-Z\d\s]+/g,'-')  //  regexp (chatgpt)   ^ negate --inko chod ke baki sab match krr diya a-z A-Z d(means digit)     s (spaces)
-            .replace(/\s/g,'-')  // space ko globally replace krr do - 
+            .replace(/[^a-zA-Z\d\s]+/g, "-")  //  regexp (chatgpt)   ^ negate --inko chod ke baki sab match krr diya a-z A-Z d(means digit)     s (spaces)
+            .replace(/\s/g, "-")  // space ko globally replace krr do - 
            
         }
-        return ''  // empty string return kr do agar vo nhi ha to
+        return ""  // empty string return kr do agar vo nhi ha to
     },[])
 
     React.useEffect(() => {
 
         const subscription = watch ((value,{name}) => {
             if(name === 'title') {
-                setValue('slug',SlugTransform(value.title,
-                    {shouldValidate : true}))
+                setValue('slug',SlugTransform(value.title),
+                    {shouldValidate : true});
             }
         })
 
 
-        return () => {
-            subscription.unsubscribe()  // memory management  -- optimized  --khud hi baar bar ghum ta na re jye
-        }
+        return () =>  subscription.unsubscribe() ;
+             // memory management  -- optimized  --khud hi baar bar ghum ta na re jye
+        
 
-    },[watch ,SlugTransform ,setValue])
+    },[watch ,SlugTransform ,setValue]);
 
 
     return (
@@ -93,22 +94,22 @@ function PostForm ({post}) {
                 <Input 
                 label = 'Title :'
                 placeholder = 'Title'
-                className="mb-4"/>
-                {...register('title',{
+                className="mb-4"
+                {...register("title",{
                     required:true
                 })}
+                />
 
            
                 <Input 
-                lable ="Slug"
+                label ="Slug"
                  placeholder="Slug"
                  className ="mb-4"
                  {...register("slug" , {
                      required:true
                  })}
-                 onInput ={ (e) => {
-                     setValue("slug",SlugTransform(e.currentTarget.value),
-                     {shouldValidate :true});
+                 onInput={(e) => {
+                    setValue("slug", SlugTransform(e.currentTarget.value), { shouldValidate: true });
                  }}
                 />
                 <RTE label= 'Content :' name ="content" 
@@ -141,8 +142,8 @@ function PostForm ({post}) {
                 />
 
                 <Button 
-                type='submit'
-                bgColor={post ?"bg-green-500":undefined}
+                type="submit"
+                bgColor={post ? "bg-green-500" : undefined }
                 className="w-full">
                     {post ? "Update" : "Submit"}
                 </Button>           
@@ -153,3 +154,4 @@ function PostForm ({post}) {
     )
 }
  
+export default PostForm

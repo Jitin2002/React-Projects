@@ -1,12 +1,13 @@
-import React ,{forwardRef, useID} from "react";
+import React , {useId} from "react";
 
-const Input = forwardRef( function Input ({
+const Input = React.forwardRef( function Input ({
     label,
     type = 'text',
     className ='',
     ...props
 }, ref){ // jo bhi use kre ga vo ek referance bhi pass kre ga
-    const id= useID()
+   
+    const id = useId()
     
     return (
         <div className="w-full">

@@ -3,8 +3,8 @@ import authService from "../appwrite/Auth";
 import { useNavigate,Link } from "react-router-dom";
 import { login } from "../store/authSlice";
 import {Button ,Input ,Logo} from './index'
-import { UseDispatch, useDispatch } from "react-redux";
-import { UseForm, useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 
 function Signup (){
 
@@ -21,9 +21,8 @@ function Signup (){
             if(userData) {
                 const userData = await authService.getCurrentUser()
 
-                if(userData) {
-                    dispatch(login(userData))
-                }
+                if(userData)  dispatch(login(userData))
+             
                 navigate('/') // forcefully navigate kra dete ha 
             }
 
@@ -62,8 +61,7 @@ function Signup (){
                     <Input
                     label = 'Full name :'
                     placeholder = 'Enter Your Name'
-
-                    {...register("Name",{
+                    {...register("name",{
                         required :true
                     })}
                     />

@@ -18,10 +18,12 @@ export default function RTE({name,control,label ,defaultVlaue = ""}){
             render={ ({field : {onChange}}) => (
 
                 <Editor 
+                apiKey="4hnk711ooz662wgayljsoky46uacwwsyt30s52xj5x62ix0p"
                 initialValue="default value"
                 init={
-                    {branding:false,
-                    initialValue:{defaultVlaue},
+                    {
+                        
+                    initialValue:defaultVlaue,
                     height:500,
                     menubar:true,
                     plugins:[
@@ -35,15 +37,15 @@ export default function RTE({name,control,label ,defaultVlaue = ""}){
                         "preview",
                         "anchor",
                         "searchreplace",
-                       " visualblocks",
-                       "code",
-                       "fullscreen",
-                       "insertdatetime",
-                       "media",
-                       "table",
-                       "code",
-                       "wordcount",
-                       "anchor",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "code",
+                        "help",
+                        "wordcount",
 
                 ],
                 toolbar :'undo redo | fromatselect | bold italic backcolor | \
